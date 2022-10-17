@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route('/setimg', methods=['POST'])
 def set_image_info():
     print(request.json)
-    insert_file_info(request.json['filename'], request.json['imgType'], request.json['isCancer'], request.json['cancerType'], request.json['comment'])
+#    insert_file_info(request.json['filename'], request.json['imgType'], request.json['isCancer'], request.json['cancerType'], request.json['comment'])
 
     fullname_old = 'static/unmarked_img' + '/' + request.json['imgType'] + '/' + request.json['filename']
     fullname_new = 'static/marked_img' + '/' + request.json['imgType'] + '/' + request.json['filename']
