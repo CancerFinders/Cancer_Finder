@@ -8,6 +8,14 @@ import cv2
 
 app = Flask(__name__)
 
+
+#POST запрос
+#В него отправлятся
+# 1.Имя файла
+# 2.Тип изображение ( chest(грудь), hands, legs и тд) пока папочки есть только под chest
+# 3. Из формы: есть ли рак - True or False
+# 4. Из формы: тип рака любая - строка
+# 5. Из формы: комментрий - строка
 @app.route('/setimg', methods=['POST'])
 def set_image_info():
     print(request.json)
@@ -19,6 +27,10 @@ def set_image_info():
 
     return 201
 
+
+#GET запрос
+#в запросе указываешь тип изображение (пока есть только chest)
+#в ответ получаешь имя присланного файла и двумерный массив пикселей изображения
 @app.route('/img/<string:type>', methods=['GET'])
 def get_image(type):
     dirname = 'static/unmarked_img' + '/' + type
