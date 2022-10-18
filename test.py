@@ -1,20 +1,3 @@
-# from os import listdir
-# from random import randint
-# import cv2
-# from skimage.io import imread
-# from os.path import isfile, join
-#
-# image = 'unmarked/' + str(listdir('unmarked')[randint(0, len(listdir('unmarked')) - 1)])
-# # print(listdir('unmarked')[randint(0, len(listdir('unmarked')) - 1)])
-# # print(imread(image))
-#
-# dirname = 'unmarked'
-# images = listdir(dirname)
-# filename = images[randint(0, len(images) - 1)]
-# fullname = dirname + '/' + filename
-#
-#
-# print(cv2.imread(fullname))
 import requests
 
 answer = requests.post('http://127.0.0.1:5000/setimg', json={
@@ -25,3 +8,21 @@ answer = requests.post('http://127.0.0.1:5000/setimg', json={
                                                             "comment": "Test Text" })
 
 print(answer)
+# import numpy as np
+# import cv2
+# import pydicom as dicom
+# import numpy
+# from skimage import exposure
+#
+# ds = dicom.dcmread('static/unmarked_img/chest/slice0.dcm', force=True)
+# print(ds)
+# ds.file_meta.TransferSyntaxUID = dicom.uid.ImplicitVRLittleEndian
+# dcm_sample=ds.pixel_array
+#
+# dcm_sample=exposure.equalize_adapthist(dcm_sample)
+# print(ds.pixel_array)
+#
+#
+# import matplotlib.pyplot as plt
+# plt.imshow(ds.pixel_array, cmap="gray")
+# plt.show()

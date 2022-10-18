@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from os import listdir
 from os import replace
 from random import randint
+from ImageWork.dicom import get_img_dicom
 from DataBase.dbMongo import insert_file_info
 import cv2
 
@@ -37,9 +38,11 @@ def get_image(type):
     images = listdir(dirname)
     filename = images[randint(0, len(images) - 1)]
     fullname = dirname + '/' + filename
+    if (filename.split(sep = '.')[1]):
+        img = get_img_dicom(fullname)
+    else:
+        img = cv2.imread(fullname).tolist()
 
-    img = cv2.imread(fullname).tolist()
-    print(img)
     json = jsonify({
         'name': filename,
         'img': img
