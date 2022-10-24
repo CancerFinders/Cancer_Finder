@@ -1,18 +1,29 @@
+from pathlib import Path
+
+import torch
+
+from nn.inferencers.unet_inferencer import UNetInferencer
+from nn.trainers.unet_trainer import UNetTrainer
+from nn.unet.unet import UNet
+
+
 class MainModel:
+    unet: UNet
+    unet_trainer: UNetTrainer
+    unet_inferencer: UNetInferencer
+
     def __init__(self):
-        pass
+        self.unet = UNet(1, 1, True)
 
-    def train_step(self, orig, predict):
-        pass
+    def fit(self, dataset):
+        self.unet_trainer.train(dataset)
 
-    def valid_step(self, orig, predict):
-        pass
+    def predict(self, dataset):
+        self.unet_inferencer.predict(dataset)
 
-    def infer_step(self, orig):
-        pass
+    def save(self, path: Path):
+        torch.save(self.unet.state_dict(), path)
 
-    def save(self, path):
-        pass
-
-    def load(self, path):
-        pass
+    def load(self, path: Path):
+        self.unet.load_state_dict(torch.load(path))
+        return True
