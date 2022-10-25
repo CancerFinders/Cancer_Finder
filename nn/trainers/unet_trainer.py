@@ -1,7 +1,7 @@
 import torch.nn as tnn
 import torch.optim as optim
 
-from nn.unet.unet import UNet
+from nn.models.unet.unet import UNet
 
 
 class UNetTrainer:
