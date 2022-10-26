@@ -25,5 +25,5 @@ class LoaderDataHealthy:
     def __init__(self):
         self.ready_data = []
         n = NiftiDirectoryLoader(self.c.stud_0)
-        for case in tqdm(range(n.size)):
+        for _ in tqdm(range(n.size)):
             self.ready_data.append(n.__iter__().data.get_fdata())

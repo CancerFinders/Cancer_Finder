@@ -41,18 +41,34 @@ class CaseTrain:
     orig: numpy.array
     result: numpy.array
 
+    counter: int
+
     def __init__(self, orig: numpy.array, result: numpy.array):
         self.orig = orig
         self.result = result
+        self.counter = 0
         if not self.is_right_dim_size():
             raise Exception("Wrong batch format")
 
     def is_right_dim_size(self) -> bool:
-        return (len(self.orig.shape) == 3) and (len(self.result.shape) == 3)
+        return (len(self.orig.shape) == 4) and (len(self.result.shape) == 4)
+
+    def get_next_batch(self, size: int) -> (numpy.array, numpy.array, bool):
+        size = min(size, self.orig.shape[0] - self.counter)
+        o = self.orig[self.counter: self.counter + size]
+        r = self.result[self.counter: self.counter + size]
+        self.counter += size
+        if self.counter + 1 == self.orig.shape[0]:
+            self.counter = 0
+            end = True
+        else:
+            end = False
+        return o, r, end
 
 
 class DatasetTraining(Dataset):
     case_list: List[CaseTrain]
+    counter = 0
 
     def __init__(self, data: List[List[numpy.array]]):
         self.case_list = []
@@ -68,3 +84,14 @@ class DatasetTraining(Dataset):
 
     def __len__(self) -> int:
         return len(self.case_list)
+
+    def get_next_batch(self, batch_size: int) -> (numpy.array, numpy.array, bool):
+        o, r, s = self.case_list[self.counter].get_next_batch(batch_size)
+        if s:
+            self.counter += 1
+        if self.counter == len(self.case_list):
+            self.counter = 0
+            end = True
+        else:
+            end = False
+        return o, r, end
