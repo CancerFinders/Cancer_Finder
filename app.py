@@ -2,9 +2,11 @@ from flask import Flask, jsonify, request
 from os import listdir
 from os import replace
 from random import randint
+from ImageWork import сolors
 from ImageWork.dicom import get_img_dicom
 from DataBase.dbMongo import insert_file_info
 import cv2
+
 
 
 app = Flask(__name__)
@@ -38,15 +40,31 @@ def get_image(type):
     images = listdir(dirname)
     filename = images[randint(0, len(images) - 1)]
     fullname = dirname + '/' + filename
-    if (filename.split(sep = '.')[1]):
+    if (filename.split(sep = '.')[1] == 'dcm'):
         img = get_img_dicom(fullname)
+        img = сolors.DCMtoRGB(img)
+        img = cv2.resize(img, (500, 500))
+        img  = img.tolist()
+        w = len(img)
+        h = len(img[0])
+        img = сolors.RGBtoRGBA(img)
+        img = сolors.PlaneToLine(img)
     else:
-        img = cv2.imread(fullname).tolist()
+        img = cv2.imread(fullname)
+        img = cv2.resize(img, (500, 500))
+        img = img.tolist()
+        w = len(img)
+        h = len(img[0])
+        img = сolors.RGBtoRGBA(img)
+        img = сolors.PlaneToLine(img)
 
     json = jsonify({
         'name': filename,
-        'img': img
+        'img': img,
+        'w': w,
+        'h': h,
     })
+    json.headers.add("Access-Control-Allow-Origin", "*")
     return json
 
 @app.route('/')
