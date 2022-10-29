@@ -48,11 +48,19 @@ class VAETrainer:
                 acc += 1
             l = loss
             counter += 1
-            if counter % 1000 == 0:
+            if counter % 100 == 0:
                 print(f"Batch: {counter:09d} acc: {(acc / counter):05f} loss: {(l / counter):05f}")
         return acc / counter, l / counter
 
     def train(self, dataset: DatasetTraining):
+        c = 0
+        acc_prev = 0
         for i in range(epoches):
             acc, loss = self.train_epoch(dataset)
             print(f"Complete {i} acc: {acc:05d} loss: {loss:05d}")
+            if acc_prev > acc:
+                acc_prev = acc
+            else:
+                c += 1
+                if c > 2:
+                    break

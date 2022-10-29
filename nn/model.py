@@ -36,5 +36,6 @@ class MainModel:
         torch.save(self.model.decoder.state_dict(), path / "decoder.pt")
 
     def load(self, path: Path):
-        self.model.load_state_dict(torch.load(path))
+        self.model.coder.load_state_dict(torch.load(path / "coder.pt"))
+        self.model.decoder.load_state_dict(torch.load(path / "decoder.pt"))
         return True
