@@ -1,6 +1,6 @@
 import requests
 
-answer = requests.post('http://127.0.0.1:5000/setimg', json={
+answer = requests.post('http://127.0.0.1:5000/sendjson', json={
                                                             "filename":"1.png",
                                                             "imgType": "chest",
                                                             "isCancer": "False",

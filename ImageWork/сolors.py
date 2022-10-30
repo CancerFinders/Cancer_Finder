@@ -3,7 +3,6 @@ import numpy as np
 
 def DCMtoRGB(img):
     new_img = np.ndarray((len(img), len(img[0]), 3))
-    print(new_img)
 
     for row_num in range(0,len(img)):
 
