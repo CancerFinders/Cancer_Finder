@@ -1,4 +1,3 @@
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from multiprocessing import Pool
 from pathlib import Path
 from typing import List
@@ -10,6 +9,7 @@ from tqdm import tqdm
 from nn.datasets.covid19 import LoaderDataHealthy
 from nn.model import MainModel
 from nn.pipeline_parts import DatasetInference, DatasetTraining, CaseInference
+import matplotlib.pyplot as plt
 
 model = MainModel()
 
@@ -66,10 +66,21 @@ def train_vae():
 
 def test_vae():
     p = "/home/kirrog/projects/Cancer_Finder/models/vae"
+    r_p = "/home/kirrog/projects/Cancer_Finder/data/results"
     model.load(Path(p))
     l = LoaderDataHealthy()
     case = normalize(l.ready_data[0])
+    for i in tqdm(range(case.shape[0]), desc="saving"):
+        r = numpy.zeros((case.shape[2], case.shape[3], 3))
+        r[:, :, 0] = case[i, 0]
+        plt.imsave(Path(r_p) / "orig" / f"{i:03d}.png", r)
     x = model.predict_once(CaseInference(case))
+    x[x < 0] = 0
+    x[x > 1] = 1
+    for i in tqdm(range(x.shape[0]), desc="saving"):
+        r = numpy.zeros((x.shape[2], x.shape[3], 3))
+        r[:, :, 0] = x[i, 0]
+        plt.imsave(Path(r_p) / "res" / f"{i:03d}.png", r)
     print(x.mean())
     print(x.max())
     print(x.min())
