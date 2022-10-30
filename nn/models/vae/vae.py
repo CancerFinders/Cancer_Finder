@@ -1,4 +1,5 @@
 import torch.nn as tnn
+from torchsummary import summary
 
 
 class DoubleConv(tnn.Module):
@@ -64,11 +65,12 @@ class Coder(tnn.Module):
     def __init__(self):
         super(Coder, self).__init__()
 
-        self.inc = DoubleConv(1, 64)
-        self.down1 = Down(64, 128)
-        self.down2 = Down(128, 256)
-        self.down3 = Down(256, 512)
-        self.down4 = Down(512, 1024)
+        self.inc = DoubleConv(1, 32)
+        self.down1 = Down(32, 64)
+        self.down2 = Down(64, 128)
+        self.down3 = Down(128, 256)
+        self.down4 = Down(256, 512)
+        # self.down5 = Down(512, 512)
 
     def forward(self, x):
         x = self.inc(x)
@@ -82,14 +84,16 @@ class Coder(tnn.Module):
 class Decoder(tnn.Module):
     def __init__(self):
         super(Decoder, self).__init__()
-
-        self.up1 = Up(1024, 512)
-        self.up2 = Up(512, 256)
-        self.up3 = Up(256, 128)
-        self.up4 = Up(128, 64)
-        self.outc = OutConv(64, 1)
+        self.bottleneck = DoubleConv(512, 512, 256)
+        # self.up0 = Up(512, 512)
+        self.up1 = Up(512, 256)
+        self.up2 = Up(256, 128)
+        self.up3 = Up(128, 64)
+        self.up4 = Up(64, 32)
+        self.outc = OutConv(32, 1)
 
     def forward(self, x):
+        x = self.bottleneck(x)
         x = self.up1(x)
         x = self.up2(x)
         x = self.up3(x)
@@ -103,6 +107,8 @@ class VAE(tnn.Module):
         super(VAE, self).__init__()
         self.coder = Coder()
         self.decoder = Decoder()
+        self.to("cuda")
+        summary(self, (1, 512, 512))
 
     def forward(self, x):
         x = self.coder(x)

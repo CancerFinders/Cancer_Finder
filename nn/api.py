@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+from multiprocessing import Pool
 from pathlib import Path
 from typing import List
 
@@ -33,16 +35,41 @@ def predict_ones(case: numpy.array) -> numpy.array:
     return model.predict_once(CaseInference(case))
 
 
+def normalize(i: numpy.array) -> numpy.array:
+    i[i < 0] = 0
+    n = numpy.zeros((i.shape[-1], 1, i.shape[0], i.shape[1]))
+    i = numpy.log(i)
+    i = np.nan_to_num(i, nan=0.0, posinf=1.0, neginf=0.0)
+    i /= i.max()
+    for j in range(i.shape[2]):
+        n[j, 0] = i[:, :, j]
+    return n
+
+
 def train_vae():
+    p = "/home/kirrog/projects/Cancer_Finder/models/vae"
     l = LoaderDataHealthy()
     list_in = []
-    for i in tqdm(l.ready_data):
-        i[i < 0] = 0
-        i /= i.max()
-        i = np.reshape(i, (i.shape[-1], 1, i.shape[0], i.shape[1]))
-        list_in.append([i, i])
+    # for i in l.ready_data:
+    #     i = normalize(i)
+    #     list_in.append([i, i])
+    with Pool(16) as f:
+        for i in tqdm(f.imap_unordered(normalize, l.ready_data), total=len(l.ready_data)):
+            list_in.append([i, i])
+    l = None
     d = DatasetTraining(list_in)
     print("Dataset Ready")
-    model.fit(d)
+    model.fit(d, p)
     print("Complete")
-    model.save(Path("/home/kirrog/projects/Cancer_Finder/models/vae"))
+    model.save(Path(p))
+
+
+def test_vae():
+    p = "/home/kirrog/projects/Cancer_Finder/models/vae"
+    model.load(Path(p))
+    l = LoaderDataHealthy()
+    case = normalize(l.ready_data[0])
+    x = model.predict_once(CaseInference(case))
+    print(x.mean())
+    print(x.max())
+    print(x.min())

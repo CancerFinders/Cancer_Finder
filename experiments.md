@@ -1,0 +1,1 @@
+1) VAE of 4 double levels with bottleneck - middle layer 256x32x32 - 29 acc with 0.01 threshold

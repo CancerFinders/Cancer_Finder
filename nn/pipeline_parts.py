@@ -12,11 +12,6 @@ class CaseInference:
 
     def __init__(self, data: numpy.array):
         self.data = data
-        if not self.is_right_dim_size():
-            raise Exception("Wrong batch format")
-
-    def is_right_dim_size(self) -> bool:
-        return len(self.data.shape) == 3
 
 
 class DatasetInference(Dataset):
@@ -25,10 +20,7 @@ class DatasetInference(Dataset):
     def __init__(self, data: List[numpy.array]):
         self.case_list = []
         for i, case in enumerate(data):
-            try:
-                self.case_list.append(CaseInference(case))
-            except Exception:
-                logger.warning(f"Case number {i} is wrong dimension size")
+            self.case_list.append(CaseInference(case))
 
     def __getitem__(self, item: int) -> CaseInference:
         return self.case_list[item]
@@ -47,11 +39,6 @@ class CaseTrain:
         self.orig = orig
         self.result = result
         self.counter = 0
-        if not self.is_right_dim_size():
-            raise Exception("Wrong batch format")
-
-    def is_right_dim_size(self) -> bool:
-        return (len(self.orig.shape) == 4) and (len(self.result.shape) == 4)
 
     def get_next_batch(self, size: int) -> (numpy.array, numpy.array, bool):
         size = min(size, self.orig.shape[0] - 1 - self.counter)
@@ -73,11 +60,8 @@ class DatasetTraining(Dataset):
     def __init__(self, data: List[List[numpy.array]]):
         self.case_list = []
         for i, case in enumerate(data):
-            try:
-                orig, result = case
-                self.case_list.append(CaseTrain(orig, result))
-            except Exception:
-                logger.warning(f"Case number {i} is wrong dimension size")
+            orig, result = case
+            self.case_list.append(CaseTrain(orig, result))
         logger.warning(f"Number of cases: {len(self.case_list)}")
         # logger.warning(f"{self.case_list[0].orig.max()} {self.case_list[0].orig.min()}")
 

@@ -22,14 +22,14 @@ class MainModel:
         self.trainer = VAETrainer(self.model)
         self.inferencer = VAEInferencer(self.model)
 
-    def fit(self, dataset: DatasetTraining):
-        self.trainer.train(dataset)
+    def fit(self, dataset: DatasetTraining, path):
+        self.trainer.train(dataset, path)
 
     def predict(self, dataset: DatasetInference):
-        self.inferencer.predict(dataset)
+        return self.inferencer.predict(dataset)
 
     def predict_once(self, case: CaseInference) -> numpy.array:
-        self.inferencer.predict_ones(case)
+        return self.inferencer.predict_ones(case)
 
     def save(self, path: Path):
         torch.save(self.model.coder.state_dict(), path / "coder.pt")

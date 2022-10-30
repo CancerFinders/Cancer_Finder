@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy
 import torch
 import torch.nn as tnn
@@ -16,7 +18,8 @@ class VAETrainer:
     def __init__(self, model: VAE):
         self.vae = model
         self.vae.cuda()
-        self.criterion = tnn.CrossEntropyLoss()
+        self.criterion = tnn.MSELoss()
+        # self.criterion = tnn.CrossEntropyLoss()
         self.optimizer = optim.SGD(self.vae.parameters(), lr=0.001, momentum=0.9)
 
     # return loss
@@ -46,21 +49,29 @@ class VAETrainer:
             loss = self.train_step(o, r)
             if loss < 0.01:
                 acc += 1
-            l = loss
+            l += loss
             counter += 1
             if counter % 100 == 0:
                 print(f"Batch: {counter:09d} acc: {(acc / counter):05f} loss: {(l / counter):05f}")
         return acc / counter, l / counter
 
-    def train(self, dataset: DatasetTraining):
+    def train(self, dataset: DatasetTraining, path:str):
         c = 0
         acc_prev = 0
         for i in range(epoches):
             acc, loss = self.train_epoch(dataset)
-            print(f"Complete {i} acc: {acc:05d} loss: {loss:05d}")
+            print(f"Complete {i} acc: {acc:05f} loss: {loss:05f}")
+            self.save_checkpoint(i, path)
             if acc_prev > acc:
                 acc_prev = acc
             else:
                 c += 1
                 if c > 2:
                     break
+
+    def save_checkpoint(self, epoch, path:str):
+        p = Path(path)
+        p_d = p / f"ep{epoch:03d}"
+        p_d.mkdir(parents=True)
+        torch.save(self.vae.coder.state_dict(), p_d / "coder.pt")
+        torch.save(self.vae.decoder.state_dict(), p_d / "decoder.pt")
