@@ -47,7 +47,7 @@ def normalize(i: numpy.array) -> numpy.array:
 
 
 def train_vae():
-    p = "/home/kirrog/projects/Cancer_Finder/models/vae_1"
+    p = "/home/kirrog/projects/Cancer_Finder/models/vae_2"
     l = LoaderDataHealthy()
     list_in = []
     # for i in l.ready_data:
@@ -65,8 +65,8 @@ def train_vae():
 
 
 def test_vae():
-    p = "/home/kirrog/projects/Cancer_Finder/models/vae"
-    r_p = "/home/kirrog/projects/Cancer_Finder/data/results"
+    p = "/home/kirrog/projects/Cancer_Finder/models/vae_2"
+    r_p = "/home/kirrog/projects/Cancer_Finder/data/results_2"
     model.load(Path(p))
     l = LoaderDataHealthy()
     case = normalize(l.test_data[0])

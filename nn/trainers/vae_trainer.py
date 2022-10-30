@@ -73,6 +73,6 @@ class VAETrainer:
     def save_checkpoint(self, epoch: int, path: str):
         p = Path(path)
         p_d = p / f"ep{epoch:03d}"
-        p_d.mkdir(parents=True)
+        p_d.mkdir(parents=True, exist_ok=True)
         torch.save(self.vae.coder.state_dict(), p_d / "coder.pt")
         torch.save(self.vae.decoder.state_dict(), p_d / "decoder.pt")
