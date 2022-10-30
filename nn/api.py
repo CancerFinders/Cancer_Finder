@@ -47,7 +47,7 @@ def normalize(i: numpy.array) -> numpy.array:
 
 
 def train_vae():
-    p = "/home/kirrog/projects/Cancer_Finder/models/vae_2"
+    p = "/home/kirrog/projects/Cancer_Finder/models/vae_3"
     l = LoaderDataHealthy()
     list_in = []
     # for i in l.ready_data:
@@ -65,8 +65,8 @@ def train_vae():
 
 
 def test_vae():
-    p = "/home/kirrog/projects/Cancer_Finder/models/vae_2"
-    r_p = "/home/kirrog/projects/Cancer_Finder/data/results_2"
+    p = "/home/kirrog/projects/Cancer_Finder/models/vae_3"
+    r_p = "/home/kirrog/projects/Cancer_Finder/data/results_3"
     model.load(Path(p))
     l = LoaderDataHealthy()
     case = normalize(l.test_data[0])
@@ -87,6 +87,3 @@ def test_vae():
         plt.imsave(p_res / f"{i:03d}.png", r)
     num = numpy.sum(numpy.abs(numpy.subtract(case, x)))
     print(num)
-    print(x.mean())
-    print(x.max())
-    print(x.min())

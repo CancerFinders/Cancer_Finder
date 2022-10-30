@@ -85,7 +85,7 @@ class Coder(tnn.Module):
 class Decoder(tnn.Module):
     def __init__(self):
         super(Decoder, self).__init__()
-        self.bottleneck = DoubleConv(512, 512, 256)
+        # self.bottleneck = DoubleConv(512, 512, 256)
         # self.up0 = Up(512, 512)
         self.up1 = Up(512, 256)
         self.up2 = Up(256, 128)
@@ -94,7 +94,7 @@ class Decoder(tnn.Module):
         self.outc = OutConv(32, 1)
 
     def forward(self, x):
-        x = self.bottleneck(x)
+        # x = self.bottleneck(x)
         # x = self.up0(x)
         x = self.up1(x)
         x = self.up2(x)
