@@ -16,5 +16,5 @@
 # print(d.shape)
 from nn.api import train_vae, test_vae
 
-# train_vae()
-test_vae()
+train_vae()
+# test_vae()

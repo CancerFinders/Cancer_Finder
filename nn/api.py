@@ -54,7 +54,7 @@ def train_vae():
     #     i = normalize(i)
     #     list_in.append([i, i])
     with Pool(16) as f:
-        for i in tqdm(f.imap_unordered(normalize, l.train_data), total=len(l.ready_data)):
+        for i in tqdm(f.imap_unordered(normalize, l.train_data), total=len(l.train_data)):
             list_in.append([i, i])
     l = None
     d = DatasetTraining(list_in)

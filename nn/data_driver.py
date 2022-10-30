@@ -24,9 +24,12 @@ class NiftiDirectoryLoader:
         self.nifties_paths = list(sorted([Path(x) for x in list(path_to_dir.glob("*.nii.gz"))]))
         self.size = len(self.nifties_paths)
 
-    def __iter__(self) -> NiftiEntity:
+    def __next__(self) -> NiftiEntity:
+        if self.counter == self.size:
+            raise StopIteration()
         img = nib.load(self.nifties_paths[self.counter])
         self.counter += 1
-        if self.counter == self.size:
-            self.counter = 0
         return NiftiEntity(img)
+
+    def __iter__(self):
+        return self
