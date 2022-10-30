@@ -54,7 +54,7 @@ def train_vae():
     #     i = normalize(i)
     #     list_in.append([i, i])
     with Pool(16) as f:
-        for i in tqdm(f.imap_unordered(normalize, l.ready_data), total=len(l.ready_data)):
+        for i in tqdm(f.imap_unordered(normalize, l.train_data), total=len(l.ready_data)):
             list_in.append([i, i])
     l = None
     d = DatasetTraining(list_in)
@@ -69,7 +69,7 @@ def test_vae():
     r_p = "/home/kirrog/projects/Cancer_Finder/data/results"
     model.load(Path(p))
     l = LoaderDataHealthy()
-    case = normalize(l.ready_data[0])
+    case = normalize(l.test_data[0])
     for i in tqdm(range(case.shape[0]), desc="saving"):
         r = numpy.zeros((case.shape[2], case.shape[3], 3))
         r[:, :, 0] = case[i, 0]
