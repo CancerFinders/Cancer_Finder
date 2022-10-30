@@ -47,7 +47,7 @@ def normalize(i: numpy.array) -> numpy.array:
 
 
 def train_vae():
-    p = "/home/kirrog/projects/Cancer_Finder/models/vae"
+    p = "/home/kirrog/projects/Cancer_Finder/models/vae_1"
     l = LoaderDataHealthy()
     list_in = []
     # for i in l.ready_data:
@@ -73,14 +73,20 @@ def test_vae():
     for i in tqdm(range(case.shape[0]), desc="saving"):
         r = numpy.zeros((case.shape[2], case.shape[3], 3))
         r[:, :, 0] = case[i, 0]
-        plt.imsave(Path(r_p) / "orig" / f"{i:03d}.png", r)
+        p_orig = Path(r_p) / "orig"
+        p_orig.mkdir(parents=True, exist_ok=True)
+        plt.imsave(p_orig / f"{i:03d}.png", r)
     x = model.predict_once(CaseInference(case))
     x[x < 0] = 0
     x[x > 1] = 1
     for i in tqdm(range(x.shape[0]), desc="saving"):
         r = numpy.zeros((x.shape[2], x.shape[3], 3))
         r[:, :, 0] = x[i, 0]
-        plt.imsave(Path(r_p) / "res" / f"{i:03d}.png", r)
+        p_res = Path(r_p) / "res"
+        p_res.mkdir(parents=True, exist_ok=True)
+        plt.imsave(p_res / f"{i:03d}.png", r)
+    num = numpy.sum(numpy.abs(numpy.subtract(case, x)))
+    print(num)
     print(x.mean())
     print(x.max())
     print(x.min())

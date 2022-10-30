@@ -1,1 +1,2 @@
-1) VAE of 4 double levels with bottleneck - middle layer 256x32x32 - 29 acc with 0.01 threshold
+1) VAE of 4 double levels with bottleneck - middle layer 256x32x32 - 3 acc with 0.01 threshold - dif 494 311
+2) VAE of 5 double levels with bottleneck - middle 128x32x32 - 5 acc with same t - dif 527 245

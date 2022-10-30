@@ -55,7 +55,7 @@ class VAETrainer:
                 print(f"Batch: {counter:09d} acc: {(acc / counter):05f} loss: {(l / counter):05f}")
         return acc / counter, l / counter
 
-    def train(self, dataset: DatasetTraining, path:str):
+    def train(self, dataset: DatasetTraining, path: str):
         c = 0
         acc_prev = 0
         for i in range(epoches):
@@ -64,12 +64,13 @@ class VAETrainer:
             self.save_checkpoint(i, path)
             if acc_prev > acc:
                 acc_prev = acc
+                c = 0
             else:
                 c += 1
                 if c > 2:
                     break
 
-    def save_checkpoint(self, epoch, path:str):
+    def save_checkpoint(self, epoch: int, path: str):
         p = Path(path)
         p_d = p / f"ep{epoch:03d}"
         p_d.mkdir(parents=True)

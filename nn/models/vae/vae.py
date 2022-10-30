@@ -78,6 +78,7 @@ class Coder(tnn.Module):
         x = self.down2(x)
         x = self.down3(x)
         x = self.down4(x)
+        # x = self.down5(x)
         return x
 
 
@@ -94,6 +95,7 @@ class Decoder(tnn.Module):
 
     def forward(self, x):
         x = self.bottleneck(x)
+        # x = self.up0(x)
         x = self.up1(x)
         x = self.up2(x)
         x = self.up3(x)
