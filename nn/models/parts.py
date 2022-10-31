@@ -1,6 +1,4 @@
-import torch
 import torch.nn as tnn
-import torch.nn.functional as F
 
 
 class DoubleConv(tnn.Module):
@@ -49,15 +47,8 @@ class Up(tnn.Module):
             self.up = tnn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size=2, stride=2)
             self.conv = DoubleConv(in_channels, out_channels)
 
-    def forward(self, x1, x2):
-        x1 = self.up(x1)
-        diffY = x2.size()[2] - x1.size()[2]
-        diffX = x2.size()[3] - x1.size()[3]
-
-        x1 = F.pad(x1, [diffX // 2, diffX - diffX // 2,
-                        diffY // 2, diffY - diffY // 2])
-        x = torch.cat([x2, x1], dim=1)
-        return self.conv(x)
+    def forward(self, x):
+        return self.conv(self.up(x))
 
 
 class OutConv(tnn.Module):
@@ -67,3 +58,4 @@ class OutConv(tnn.Module):
 
     def forward(self, x):
         return self.conv(x)
+

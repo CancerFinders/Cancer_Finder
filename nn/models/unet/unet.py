@@ -1,4 +1,4 @@
-from .unet_parts import *
+from nn.models.parts import *
 
 
 class UNet(tnn.Module):

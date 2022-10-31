@@ -3,15 +3,15 @@ from typing import List
 import numpy
 import torch
 
-from nn.models.vae.vae import VAE
+from nn.models.gan.gan import GAN
 from nn.pipeline_parts import DatasetInference, CaseInference
 
 
-class VAEInferencer:
-    vae: VAE
+class GANInferencer:
+    gan: GAN
 
-    def __init__(self, vae: VAE):
-        self.vae = vae
+    def __init__(self, gan: GAN):
+        self.gan = gan
 
     def predict(self, data: DatasetInference) -> List[numpy.array]:
         result = []
@@ -24,5 +24,5 @@ class VAEInferencer:
         d = numpy.zeros((1, case.data.shape[1], case.data.shape[2], case.data.shape[3]))
         for i in range(case.data.shape[0]):
             d[0] = case.data[i]
-            r[i] = self.vae(torch.Tensor(d).cuda()).cpu().detach().numpy()
+            r[i] = self.gan.generate(torch.Tensor(d).cuda())
         return r
