@@ -20,8 +20,7 @@ def reload_model(path: Path) -> bool:
 
 # Put list of pairs, of case. Each case is numpy array with 3 dimension. It starts from z [z,x,y]
 def train_loaded_model_and_save(data: List[List[numpy.array]], path: Path) -> int:
-    acc = model.fit(DatasetTraining(data))
-    model.save(path)
+    acc = model.fit(DatasetInference(data), str(path))
     return acc
 
 
@@ -87,8 +86,6 @@ def test_vae():
         plt.imsave(p_res / f"{i:03d}.png", r)
     num = numpy.sum(numpy.abs(numpy.subtract(case, x)))
     print(num)
-
-
 
 
 def train_gan():
