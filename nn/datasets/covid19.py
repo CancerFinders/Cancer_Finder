@@ -28,6 +28,17 @@ class LoaderDataHealthy:
     def __init__(self):
         self.ready_data = []
         n = NiftiDirectoryLoader(self.c.stud_0)
-        for i in tqdm(n):
+        for i in tqdm(n, total=n.size):
             self.ready_data.append(i.data.get_fdata())
         self.train_data, self.test_data = train_test_split(self.ready_data, test_size=0.10, random_state=42)
+
+
+class LoaderDataIll2:
+    c = Config()
+    ready_data: List[numpy.array]
+
+    def __init__(self):
+        self.ready_data = []
+        n_2 = NiftiDirectoryLoader(self.c.stud_2)
+        for i in tqdm(n_2, total=n_2.size):
+            self.ready_data.append(i.data.get_fdata())

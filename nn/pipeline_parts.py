@@ -22,12 +22,6 @@ class DatasetInference(Dataset):
         for i, case in enumerate(data):
             self.case_list.append(CaseInference(case))
 
-    def __getitem__(self, item: int) -> CaseInference:
-        return self.case_list[item]
-
-    def __len__(self) -> int:
-        return len(self.case_list)
-
 
 class CaseTrain:
     orig: numpy.array

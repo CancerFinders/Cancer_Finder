@@ -3,26 +3,29 @@ from pathlib import Path
 import numpy
 import torch
 
+from nn.inferencers.gan_inferencer import GANInferencer
 from nn.inferencers.unet_inferencer import UNetInferencer
 from nn.inferencers.vae_inferencer import VAEInferencer
+from nn.models.gan.gan import GAN
 from nn.models.unet.unet import UNet
 from nn.models.vae.vae import VAE
 from nn.pipeline_parts import DatasetTraining, DatasetInference, CaseInference
+from nn.trainers.gan_trainer import GANTrainer
 from nn.trainers.unet_trainer import UNetTrainer
 from nn.trainers.vae_trainer import VAETrainer
 
 
 class MainModel:
-    model: VAE
-    trainer: VAETrainer
-    inferencer: VAEInferencer
+    model: GAN
+    trainer: GANTrainer
+    inferencer: GANInferencer
 
     def __init__(self):
-        self.model = VAE()
-        self.trainer = VAETrainer(self.model)
-        self.inferencer = VAEInferencer(self.model)
+        self.model = GAN()
+        self.trainer = GANTrainer(self.model)
+        self.inferencer = GANInferencer(self.model)
 
-    def fit(self, dataset: DatasetTraining, path):
+    def fit(self, dataset: DatasetInference, path):
         self.trainer.train(dataset, path)
 
     def predict(self, dataset: DatasetInference):
@@ -34,8 +37,10 @@ class MainModel:
     def save(self, path: Path):
         torch.save(self.model.coder.state_dict(), path / "coder.pt")
         torch.save(self.model.decoder.state_dict(), path / "decoder.pt")
+        torch.save(self.model.discriminator.state_dict(), path / "discriminator.pt")
 
     def load(self, path: Path):
         self.model.coder.load_state_dict(torch.load(path / "coder.pt"))
         self.model.decoder.load_state_dict(torch.load(path / "decoder.pt"))
+        self.model.discriminator.load_state_dict(torch.load(path / "discriminator.pt"))
         return True

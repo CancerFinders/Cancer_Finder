@@ -14,7 +14,9 @@
 # t_n = t.to(device)
 # d = v(t_n).cpu()
 # print(d.shape)
-from nn.api import train_vae, test_vae
+from nn.api import train_gan, test_gan
+from nn.models.gan.gan import Discriminator, GAN
+from nn.models.vae.vae import VAE
 
-train_vae()
-test_vae()
+train_gan()
+test_gan()
