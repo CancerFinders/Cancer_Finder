@@ -1,11 +1,12 @@
 import os
 import sys
+from pathlib import Path
 
 import nibabel
 import tqdm as tqdm
 import pydicom
 
-nifti_dir = sys.argv[1]
+# nifti_dir = sys.argv[1]
 
 
 # nifti_file = nibabel.load(nifti_dir)
@@ -42,7 +43,7 @@ def nifti2dicom_1file(nifti_dir, out_dir):
     `nifti_dir`: the path to the one nifti file
     `out_dir`: the path to output
     """
-
+    Path(out_dir).mkdir(exist_ok=True, parents=True)
     nifti_file = nibabel.load(nifti_dir)
     nifti_array = nifti_file.get_fdata()
     number_slices = nifti_array.shape[2]
@@ -51,4 +52,15 @@ def nifti2dicom_1file(nifti_dir, out_dir):
         convertNsave(nifti_array[:, :, slice_], out_dir, slice_)
 
 
-nifti2dicom_1file(nifti_dir, sys.argv[2])
+nifti2dicom_1file("/media/kirrog/workdata/core_ct_lung/COVID19_1110/studies/CT-0/study_0010.nii.gz",
+                  "/home/kirrog/Documents/study_0010")
+nifti2dicom_1file("/media/kirrog/workdata/core_ct_lung/COVID19_1110/studies/CT-0/study_0210.nii.gz",
+                  "/home/kirrog/Documents/study_0210")
+nifti2dicom_1file("/media/kirrog/workdata/core_ct_lung/COVID19_1110/studies/CT-1/study_0410.nii.gz",
+                  "/home/kirrog/Documents/study_0410")
+nifti2dicom_1file("/media/kirrog/workdata/core_ct_lung/COVID19_1110/studies/CT-1/study_0610.nii.gz",
+                  "/home/kirrog/Documents/study_0610")
+nifti2dicom_1file("/media/kirrog/workdata/core_ct_lung/COVID19_1110/studies/CT-1/study_0710.nii.gz",
+                  "/home/kirrog/Documents/study_0710")
+nifti2dicom_1file("/media/kirrog/workdata/core_ct_lung/COVID19_1110/studies/CT-1/study_0810.nii.gz",
+                  "/home/kirrog/Documents/study_0810")
