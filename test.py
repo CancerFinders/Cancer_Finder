@@ -1,3 +1,8 @@
+from os import getcwd
+print(getcwd())
+
+
+
 # # from nn.datasets.covid19 import LoaderDataHealthy
 # #
 # # l = LoaderDataHealthy()
@@ -21,16 +26,16 @@
 # train_gan()
 # test_gan()
 
-import requests
-
-answer = requests.post('http://127.0.0.1:5000/sendjson', json={
-                                                            "filename":"1.png",
-                                                            "imgType": "chest",
-                                                            "isCancer": "False",
-                                                            "cancerType": "normal",
-                                                            "comment": "Test Text" })
-
-print(answer)
+# import requests
+#
+# answer = requests.post('http://127.0.0.1:5000/sendjson', json={
+#                                                             "filename":"1.png",
+#                                                             "imgType": "chest",
+#                                                             "isCancer": "False",
+#                                                             "cancerType": "normal",
+#                                                             "comment": "Test Text" })
+#
+# print(answer)
 # import numpy as np
 # import cv2
 # import pydicom as dicom

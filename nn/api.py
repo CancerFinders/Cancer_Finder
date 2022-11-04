@@ -13,7 +13,6 @@ from nn.pipeline_parts import DatasetTraining, DatasetInference, CaseInference
 
 model = MainModel()
 
-
 def reload_model(path: Path) -> bool:
     return model.load(path)
 
@@ -29,11 +28,11 @@ def inference(data: List[numpy.array]) -> List[numpy.array]:
     result = model.predict(DatasetInference(data))
     return result
 
-
+#(N, 1, 512, 512)
 def predict_ones(case: numpy.array) -> numpy.array:
     return model.predict_once(CaseInference(case))
 
-
+#(512,512, N)
 def normalize(i: numpy.array) -> numpy.array:
     i[i < 0] = 0
     n = numpy.zeros((i.shape[-1], 1, i.shape[0], i.shape[1]))

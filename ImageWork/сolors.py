@@ -16,6 +16,30 @@ def DCMtoRGB(img):
 
     return new_img
 
+def RGBAtoRGB(img, height , weidth):
+    # print(img)
+    # for i in img:
+    #     if (i != 0 and i != 255):
+    #         print(' NON BLACK OR WHITE',i)
+    new_img = np.ndarray((height, weidth, 4))
+    for weidth_num in range(0, weidth):
+        print('w', weidth_num)
+        for height_num in range(0, height):
+            print('h', height_num)
+            pixel_num = (height_num + weidth_num) * 4
+
+
+            if (img[pixel_num] != 0):
+                print('NON BLACK OR WHITE', img[pixel_num])
+                print([img[pixel_num + 2], img[pixel_num + 1] , img[pixel_num],  img[pixel_num + 3]])
+
+
+            new_img[height_num][weidth_num] = [img[pixel_num + 2], img[pixel_num + 1] , img[pixel_num],  img[pixel_num + 3]]
+    print('#############################################################################################################################')
+    # print(new_img)
+    return new_img
+
+
 def RGBtoRGBA(img , a = 255):
 
     for row_num in range(0,len(img)):
