@@ -68,7 +68,7 @@ class GAN(tnn.Module):
         m = self.coder(x).cpu().detach().numpy()
         for i in range(attempts_number):
             bias = numpy.random.random(bottleneck_size) / 10
-            r = self.decoder(torch.Tensor(m + bias).cuda())
+            r = self.decoder(torch.Tensor(m + bias).to(model_device))
             s = float(self.discriminator(r).cpu().detach().numpy())
             if s > score:
                 best = r.cpu().detach().numpy()
