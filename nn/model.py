@@ -40,7 +40,12 @@ class MainModel:
         torch.save(self.model.discriminator.state_dict(), path / "discriminator.pt")
 
     def load(self, path: Path):
-        self.model.coder.load_state_dict(torch.load(path / "coder.pt"))
-        self.model.decoder.load_state_dict(torch.load(path / "decoder.pt"))
-        self.model.discriminator.load_state_dict(torch.load(path / "discriminator.pt"))
+        if not torch.cuda.is_available():
+            self.model.coder.load_state_dict(torch.load(path / "coder.pt", map_location=torch.device('cpu')))
+            self.model.decoder.load_state_dict(torch.load(path / "decoder.pt", map_location=torch.device('cpu')))
+            self.model.discriminator.load_state_dict(torch.load(path / "discriminator.pt", map_location=torch.device('cpu')))
+        else:
+            self.model.coder.load_state_dict(torch.load(path / "coder.pt"))
+            self.model.decoder.load_state_dict(torch.load(path / "decoder.pt"))
+            self.model.discriminator.load_state_dict(torch.load(path / "discriminator.pt"))
         return True
