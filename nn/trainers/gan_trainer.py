@@ -14,11 +14,16 @@ early_stopping = 2
 threshold = 0.2
 
 
+
+
 class GANTrainer:
     gan: GAN
 
     def __init__(self, model: GAN):
         self.gan = model
+        if not torch.cuda.is_available():
+            print("At cpu it will train very slow, so code nonsupport it")
+            return
         self.gan.cuda()
         self.criterion = tnn.MSELoss()
         self.optimizer = optim.Adam(self.gan.parameters(), lr=0.001)
@@ -95,6 +100,9 @@ class GANTrainer:
         return (acc_vae + acc_discrim) / (counter * 2), (ld + lv) / (counter * 2)
 
     def train(self, dataset: DatasetInference, path: str):
+        if not torch.cuda.is_available():
+            print("At cpu it will train very slow, so code nonsupport it")
+            return
         c = 0
         acc_prev = 0
         for i in range(epoches):

@@ -6,6 +6,9 @@ import torch
 from nn.models.gan.gan import GAN
 from nn.pipeline_parts import DatasetInference, CaseInference
 
+model_device = "cpu"
+if torch.cuda.is_available():
+    model_device = "cuda"
 
 class GANInferencer:
     gan: GAN
@@ -24,5 +27,5 @@ class GANInferencer:
         d = numpy.zeros((1, case.data.shape[1], case.data.shape[2], case.data.shape[3]))
         for i in range(case.data.shape[0]):
             d[0] = case.data[i]
-            r[i] = self.gan.generate(torch.Tensor(d).cuda())
+            r[i] = self.gan.generate(torch.Tensor(d).to(model_device))
         return r
