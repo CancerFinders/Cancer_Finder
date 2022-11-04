@@ -14,23 +14,26 @@
 # t_n = t.to(device)
 # d = v(t_n).cpu()
 # print(d.shape)
-# from nn.api import train_gan, test_gan
-# from nn.models.gan.gan import Discriminator, GAN
-# from nn.models.vae.vae import VAE
-# 
+from nn.api import train_gan, test_gan
+from nn.models.gan.gan import Discriminator, GAN
+from nn.models.vae.vae import VAE
+
+g = GAN()
+print(g)
+
 # train_gan()
 # test_gan()
-
-import requests
-
-answer = requests.post('http://127.0.0.1:5000/sendjson', json={
-                                                            "filename":"1.png",
-                                                            "imgType": "chest",
-                                                            "isCancer": "False",
-                                                            "cancerType": "normal",
-                                                            "comment": "Test Text" })
-
-print(answer)
+#
+# import requests
+#
+# answer = requests.post('http://127.0.0.1:5000/sendjson', json={
+#                                                             "filename":"1.png",
+#                                                             "imgType": "chest",
+#                                                             "isCancer": "False",
+#                                                             "cancerType": "normal",
+#                                                             "comment": "Test Text" })
+#
+# print(answer)
 # import numpy as np
 # import cv2
 # import pydicom as dicom

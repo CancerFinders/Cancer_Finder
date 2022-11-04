@@ -1,15 +1,35 @@
 # Cancer_Finder
-Prepare for Hack
-Подготовка к запуску
-В корне проекта
-pip install requirements.txt
 
-# Запуск
+## Installation
 
-## Вариант 1 Через консоль
-В корне проекта
+```
+pip install -r requirements.txt
+```
+
+## Start app
+
+```
 python app.py
+```
 
-## Вариант 2 Pycharm proffesional edition
-В корне проекта
-IDE автоматически предложит способ запуска
+## View results
+
+```
+
+```
+
+## Documentation
+### Intro
+- The app consists of two parts, back (Cancer_Finder repo) and front(Cancer_Finder_F repo)
+- Back provides functionality:
+  - neural network, which can generate defects on healthy CT image
+  - contains dcm images original CT
+  - contains dcm images segmentation
+  - provide access to CT images from front and get new segmentation from front
+
+- Front provides functionality:
+  - Get CT image and show as image in redactor
+  - Segmentation redactor and save it to server
+
+### Back
+- 

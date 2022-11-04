@@ -14,6 +14,9 @@ np.random.seed(42)
 
 bottleneck_size = (512, 32, 32)
 
+model_device = "cpu"
+if torch.cuda.is_available():
+    model_device = "cuda"
 
 class Discriminator(tnn.Module):
     def __init__(self):
@@ -47,8 +50,8 @@ class GAN(tnn.Module):
         self.decoder = Decoder()
         self.discriminator = Discriminator()
 
-        self.coder.to("cuda")
-        self.to("cuda")
+        self.coder.to(model_device)
+        self.to(model_device)
         print("Coder")
         summary(self.coder, (1, 512, 512))
         print("GAN")
