@@ -1,7 +1,7 @@
 # from os import getcwd
 # print(getcwd())
-import torch
-print(torch.cuda.is_available())
+
+# print(torch.cuda.is_available())
 
 # # from nn.datasets.covid19 import LoaderDataHealthy
 # #
@@ -19,12 +19,10 @@ print(torch.cuda.is_available())
 # t_n = t.to(device)
 # d = v(t_n).cpu()
 # print(d.shape)
-# from nn.api import train_gan, test_gan
-# from nn.models.gan.gan import Discriminator, GAN
-# from nn.models.vae.vae import VAE
-# 
-# train_gan()
-# test_gan()
+from nn.api import train_gan, test_gan
+
+train_gan()
+test_gan()
 
 # import requests
 #

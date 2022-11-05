@@ -89,7 +89,7 @@ def test_vae():
 
 def train_gan():
     p_c = "/home/kirrog/projects/Cancer_Finder/models/vae_3"
-    p = "/home/kirrog/projects/Cancer_Finder/models/gan_0"
+    p = "/home/kirrog/projects/Cancer_Finder/models/gan_1"
     l = LoaderDataIll2()
     list_in = []
     with Pool(16) as f:
@@ -106,8 +106,8 @@ def train_gan():
 
 
 def test_gan():
-    p = "/home/kirrog/projects/Cancer_Finder/models/gan_0"
-    r_p = "/home/kirrog/projects/Cancer_Finder/data/results_4"
+    p = "/home/kirrog/projects/Cancer_Finder/models/gan_1"
+    r_p = "/home/kirrog/projects/Cancer_Finder/data/results_5"
     model.load(Path(p))
     l = LoaderDataHealthy()
     case = normalize(l.test_data[0])

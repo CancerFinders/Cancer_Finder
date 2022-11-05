@@ -5,6 +5,7 @@ import torch
 import torch.nn as tnn
 import torch.optim as optim
 
+from nn.datasets.augmentation import augment_image
 from nn.models.gan.gan import GAN, bottleneck_size
 from nn.pipeline_parts import DatasetTraining, DatasetInference
 
@@ -12,8 +13,6 @@ batch_size = 5
 epoches = 15
 early_stopping = 2
 threshold = 0.2
-
-
 
 
 class GANTrainer:
@@ -42,12 +41,14 @@ class GANTrainer:
             param.requires_grad = b
 
     def train_step_vae(self, o: numpy.array) -> (float, float):
-        inputs = torch.Tensor(o).cuda()
         self.optimizer.zero_grad()
+        inputs = torch.Tensor(o).cuda()
         decoder_output = self.gan.decoder(self.gan.coder(inputs))
+        # loss_d = self.criterion(decoder_output, inputs, requires_grad=True)
         loss_d = self.criterion(decoder_output, inputs)
         loss_d.backward(retain_graph=True)
         outputs = self.gan.discriminator(decoder_output)
+        # loss = self.criterion(outputs, torch.Tensor(numpy.ones((1))).cuda(), requires_grad=True)
         loss = self.criterion(outputs, torch.Tensor(numpy.ones((1))).cuda())
         loss.backward()
         self.optimizer.step()
@@ -75,6 +76,9 @@ class GANTrainer:
         for i in dataset.case_list:
             for j in range(i.data.shape[0]):
                 c = i.data[j:j + 1]
+                c[0, 0] = augment_image(c[0, 0])
+                c[c < 0] = 0.0
+                c[c > 1] = 1.0
                 loss_v_di, loss_v_de = self.train_step_vae(c)
                 loss_d = self.train_step_discrim()
 
