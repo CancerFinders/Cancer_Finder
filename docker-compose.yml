@@ -2,6 +2,6 @@ version: "3.4"
 
 services:
   back:
-    build: backend
+    build: .
     ports:
       - 5000:5000
