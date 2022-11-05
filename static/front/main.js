@@ -55,9 +55,9 @@ function httpGet(theUrl) {
     return xmlHttp.responseText;
 }
 
-let core_url = 'http://127.0.0.1:5000/img/'
+let core_url = 'http://127.0.0.1:5000/'
 
-let url =  core_url + imgType +'/512/512'
+let url =  core_url + 'img/' + imgType +'/512/512'
 let name = 'placeHolder'
 let responce  = JSON.parse(httpGet(url));
 let img = responce['img']
