@@ -14,12 +14,18 @@
 # t_n = t.to(device)
 # d = v(t_n).cpu()
 # print(d.shape)
+from pathlib import Path
+
+import torch
+
+import nn.api
 from nn.api import train_gan, test_gan
 from nn.models.gan.gan import Discriminator, GAN
 from nn.models.vae.vae import VAE
 
-g = GAN()
-print(g)
+nn.api.reload_model(Path("/home/kirrog/Documents/weights"))
+torch.serialization
+
 
 # train_gan()
 # test_gan()
