@@ -1,0 +1,78 @@
+*{
+    border-style: solid;
+}
+.MainPanel{
+
+    display: flex;
+    justify-content: center;
+
+    height: 90%;
+    background: black;
+    border-width: 2px;
+    border-color: grey;
+    border-radius: 5px;
+
+}
+
+.FilePanel {
+    height: 90%;
+    width: 20%;
+    padding: 10px;
+    margin: 10px;
+    background: orange;
+    border-width: 2px;
+    border-color: grey;
+    border-radius: 5px;
+    display: inline-block;
+}
+.ControlPanel{
+
+
+    height: 90%;
+    width: 15%;
+    padding: 10px;
+    margin: 10px;
+    background: red;
+    border-width: 2px;
+    border-color: grey;
+    border-radius: 5px;
+    display: inline-block;
+}
+.CanvasPanel{
+
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    margin: 10px;
+    height: 90%;
+    width: 65%;
+    background: blue;
+    border-width: 2px;
+    border-color: grey;
+    border-radius: 5px;
+
+}
+.Canvas{
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    background: #42ff00;
+    border-color: blue;
+    border-width: 5px;
+    overflow: scroll;
+    display: flex;
+    justify-content: center;
+}
+.Bar{
+    margin: 20px;
+
+    border-color: yellow;
+    border-width: 5px;
+}
+.drag_and_drop_panel{
+    text-align: center;
+    background: black;
+    color: white;
+    width: 90%;
+    height: 20%;
+}

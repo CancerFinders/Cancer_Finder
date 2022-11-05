@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>JavaScript Drawing APP</title>
+</head>
+<body>
+
+<div class = 'MainPanel'>
+
+    <div class = 'ControlPanel'>
+        <div class = 'Bar'>
+            <button class = 'ModeBtn'  id = '2D'>2D</button>
+            <button class = 'ModeBtn' id = '3D'>3D</button>
+            <button class = 'SliceBtn' id = 'NextSlice' style = 'display: None'>Next Slice</button>
+            <button class = 'SliceBtn' id = 'PrevSlice' style = 'display: None'>Prev Slice</button>
+        </div>
+        <div class = 'Bar'>
+            <button class = 'ControlBtn'  id = 'reduce'>Сбросить</button><br />
+            <span>Контраст</span><br />
+            <input type="range" id="ContrastSlider" oninput="setContrast()" min = -100 max = 100><br />
+            <span>Яркость</span><br />
+            <input type="range" id="BrightnessSlider" oninput="setBrightness()" min = 0 max = 200><br />
+            <span>Масштаб</span><br />
+            <input type="range" id="ScaleSlider" oninput="setScale()" min = 0 max = 200><br />
+            <!--            <button class = 'ControlBtn' id = 'addContrast'>Увеличить контрастность</button>-->
+<!--            <button class = 'ControlBtn' id = 'redContrast'>Уменьшить контрастность</button>-->
+<!--            <button class = 'ControlBtn' id = 'addBrightness'>Увеличить яркость</button>-->
+<!--            <button class = 'ControlBtn' id = 'redBrightness'>Уменьшить яркость</button>-->
+<!--            <button class = 'ControlBtn' id = 'addScale'>Увеличить масштаб</button>-->
+<!--            <button class = 'ControlBtn' id = 'redScale'>Уменьшить масштаб</button>-->
+        </div>
+        <div class = 'Bar'>
+            <button class = 'MouseBtn'  id = 'brushMode'><img class="fit-picture" src="img/Brush.png" width="40px" height="40px"></button>
+            <button class = 'MouseBtn' id = 'pointMode'><img class="fit-picture" src="img/Point.jpg" width="40px" height="40px"></button>
+            <button class = 'MouseBtn' id = 'rulerMode'><img class="fit-picture" src="img/Ruler.png" width="40px" height="40px"></button>
+        </div>
+        <div class = 'Bar'>
+            <span>Костное окно</span><br />
+            <button class = 'WindowingBtn'  id = 'boneWindowMode'><img class="fit-picture" src="img/bone.png" width="40px" height="40px"></button><br />
+            <span>Мягкотканное окно</span><br />
+            <button class = 'WindowingBtn' id = 'softfabricWindowMode'><img class="fit-picture" src="img/soft.png" width="40px" height="40px"></button><br />
+            <span>Лёгочное окно</span><br />
+            <button class = 'WindowingBtn' id = 'pulmonaryWindowMode'><img class="fit-picture" src="img/pulmonary.png" width="40px" height="40px"></button><br />
+        </div>
+        <div class = 'Bar'>
+            <span>Лёгкие/span><br />
+            <button class = 'TypeBtn'  id = 'spleenType'><img class="fit-picture" src="img/spleen.png" width="40px" height="40px"></button><br />
+            <span>Селезёнка</span><br />
+            <button class = 'TypeBtn' id = 'chestType'><img class="fit-picture" src="img/chest.png" width="40px" height="40px"></button><br />
+        </div>
+        <<button class = 'sendBtn'  id = 'send'>ОТПРАВИТЬ</button>>
+    </div>
+    <div class = 'CanvasPanel'>
+        <div class = 'Canvas' >
+            <canvas id="canvas" ></canvas>
+        </div>
+    </div>
+    <div class = 'FilePanel'>
+        <form method=post enctype=multipart/form-data>
+            <input type=file name=file id = 'senderFiles'>
+        </form>
+        <button id = 'sendFileBtn' > ОТПРАВИТЬ ФАЙЛ</button>
+        <!--<div class="drag_and_drop_panel" id = drag_and_drop_img> Загрузить картинку</div>-->
+        <div class="drag_and_drop_panel" id = drag_and_drop_json> Загрузить json разметку</div>
+    </div>
+
+    <button id='generateBtn' >СГЕНРИРОВАТЬ ИЗОБРАЖЕНИЕ</button>
+</div>
+
+<script src="sendFiles.js"></script>
+<script src="img_work.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
