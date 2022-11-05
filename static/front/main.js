@@ -55,7 +55,9 @@ function httpGet(theUrl) {
     return xmlHttp.responseText;
 }
 
-let url = 'http://127.0.0.1:5000/img/' + imgType +'/512/512'
+let core_url = 'http://127.0.0.1:5000/img/'
+
+let url =  core_url + imgType +'/512/512'
 let name = 'placeHolder'
 let responce  = JSON.parse(httpGet(url));
 let img = responce['img']
@@ -165,7 +167,7 @@ function newDDimg(){
     NextSliceButton.style.display = 'None'
     PrevSliceButton.style.display = 'None'
     imageMode = '2D';
-    let url = 'http://127.0.0.1:5000/img/' + imgType +'/512/512'
+    let url = core_url + imgType +'/512/512'
     let responce  = JSON.parse(httpGet(url));
     name = responce['name']
     let img = responce['img']
@@ -177,7 +179,7 @@ TDModeButton.addEventListener('click', ()=> {
     NextSliceButton.style.display = 'Block'
     PrevSliceButton.style.display = 'Block'
     imageMode = '3D';
-    let url = 'http://127.0.0.1:5000/img3d/' + imgType +'/512/512'
+    let url = core_url + 'img3d/' + imgType +'/512/512'
     let responce  = JSON.parse(httpGet(url));
     sliceArray = responce
     console.log(sliceArray)
@@ -393,7 +395,7 @@ sendButton.addEventListener('click', ()=> {
         'bitMask': bitMask,
     }
     // console.log(data)
-    fetch("http://127.0.0.1:5000/setimg", {
+    fetch(core_url + "setimg", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body:
@@ -419,7 +421,7 @@ generateButton.addEventListener('click', ()=> {
         'w': canvas.width,
     }
     // console.log(data)
-    fetch("http://127.0.0.1:5000/generate", {
+    fetch(core_url + "generate", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body:
