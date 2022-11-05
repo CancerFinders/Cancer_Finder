@@ -5,16 +5,26 @@ from os import listdir
 from os import replace
 from os import curdir
 from os import getcwd
+import json as json_lib
 from random import randint
 from ImageWork import сolors
 from ImageWork.dicom import get_img_dicom
 from DataBase.dbMongo import insert_file_info
 from json import load
+from matplotlib import pyplot as plt
+import numpy
+import tqdm
+from pathlib import Path
+#При деплое заменить на from nn import api
+from Cancer_Finder.nn import api
 import cv2
 
 
 
 from flask_cors import CORS
+
+api.reload_model(Path('weights'))
+
 UPLOAD_FOLDER = 'upload'
 # расширения файлов, которые разрешено загружать
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'json'}
@@ -24,32 +34,45 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 
 
+@app.route('/generate', methods=['POST'])
+def generate():
+    data = request.json
+
+    img = сolors.RGBAtoDCM(data['img'], data['h'], data['w'] )
+    # print(img)
+    cv2.imwrite('PNG.png', img)
+    case = api.normalize(img)
+    x = api.predict_ones(case)
+    x[x < 0] = 0
+    x[x > 1] = 1
+    # print('###################################################################################################################')
+    # print(x)
+    r = numpy.zeros((x.shape[2], x.shape[3], 3))
+    r[:, :, 0] = x[1, 0]
+
+    try:
+        os.mkdir('Generate')
+    except:
+        ...
+
+    plt.imsave(f"Generate/{request.json['filename']}.png", r)
+    # new_img = api.normalize()
+    print('END')
+    json = jsonify(201)
+    json.headers.add("Access-Control-Allow-Origin", "*")
+    return json
+
 @app.route('/sendimg', methods=['POST'])
 def send_img():
     print('GET FILE')
     if request.method == 'POST':
-        # проверим, передается ли в запросе файл
-        # if 'file' not in request.files:
-        #     # После перенаправления на страницу загрузки
-        #     # покажем сообщение пользователю
-        #     flash('Не могу прочитать файл')
-        #     return redirect(request.url)
         file = request.files['file']
-        # Если файл не выбран, то браузер может
-        # отправить пустой файл без имени.
-        # if file.filename == '':
-        #     flash('Нет выбранного файла')
-        #     return redirect(request.url)
         if file and file.filename:
             # безопасно извлекаем оригинальное имя файла
             filename = file.filename
             # сохраняем файл
             print(filename)
             file.save(app.config['UPLOAD_FOLDER'] + '/' + filename)
-            # если все прошло успешно, то перенаправляем
-            # на функцию-представление `download_file`
-            # для скачивания файла
-            # return redirect(url_for('download_file', name=filename))
 
     json = jsonify({
         201
@@ -64,32 +87,47 @@ def send_json():
     # for i in data['img']:
     #     if (i != 0 and i != 255):
     #         print(' NON BLACK OR WHITE',i)
-    gen = сolors.RGBAtoRGB(data['img'], data['h'], data['w'])
-    cv2.imwrite('PNG.png', gen)
+
     #insert_file_info(request.json['filename'], request.json['imgType'], request.json['isCancer'], request.json['cancerType'], request.json['comment'])
 
     # fullname_old = 'static/unmarked_img' + '/' + request.json['imgType'] + '/' + request.json['filename']
     # fullname_new = 'static/marked_img' + '/' + request.json['imgType'] + '/' + request.json['filename']
     # replace(fullname_old, fullname_new)
 
-    json = jsonify({
-        201
-    })
+    json = jsonify(201)
     json.headers.add("Access-Control-Allow-Origin", "*")
     return json
 
 @app.route('/setimg', methods=['POST'])
 def set_image_info():
-    print(request.json)
-#    insert_file_info(request.json['filename'], request.json['imgType'], request.json['isCancer'], request.json['cancerType'], request.json['comment'])
+    # print(request.json)
+    # insert_file_info(request.json['filename'], request.json['imgType'], request.json['isCancer'], request.json['cancerType'], request.json['comment'])
 
-    fullname_old = 'static/unmarked_img' + '/' + request.json['imgType'] + '/' + request.json['filename']
-    fullname_new = 'static/marked_img' + '/' + request.json['imgType'] + '/' + request.json['filename']
+    data = request.json
+    name = request.json['filename'].split('.')[0]
+    try:
+        os.mkdir('static/marked_img' + '/' + request.json['type'] + '/' + name)
+    except:
+        ...
+    old_path = 'static/unmarked_img' + '/' + request.json['type'] + '/'
+    new_path = 'static/marked_img' + '/' + request.json['type'] + '/' + name + '/'
+
+    fullname_old = old_path + request.json['filename']
+    fullname_new = new_path + request.json['filename']
     replace(fullname_old, fullname_new)
 
-    json = jsonify({
+    gen = сolors.RGBAtoRGB(data['img'], data['h'], data['w'])
+    # print(data['bitMask'])
+    cv2.imwrite(new_path +  name + '_mark.png', gen)
+
+    # buff_json = jsonify(request.json)
+    with open(new_path + request.json['filename'] +'.json', "w") as file:
+        file.write(request.json)
+
+
+    json = jsonify(
         201
-    })
+    )
     json.headers.add("Access-Control-Allow-Origin", "*")
     return json
 
@@ -111,7 +149,6 @@ def get_3dimage(type, weight, height):
     resultList = []
     for filename in images:
 
-
         fullname = dirname + '/' + filename
         if (filename.split(sep = '.')[1] == 'dcm'):
             img = get_img_dicom(fullname)
@@ -128,6 +165,7 @@ def get_3dimage(type, weight, height):
 
         resultList.append({
         'name': filename,
+        'type': type,
         'img': img,
         'w': w,
         'h': h,

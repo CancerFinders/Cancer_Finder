@@ -1,7 +1,7 @@
-from os import getcwd
-print(getcwd())
-
-
+# from os import getcwd
+# print(getcwd())
+import torch
+print(torch.cuda.is_available())
 
 # # from nn.datasets.covid19 import LoaderDataHealthy
 # #
