@@ -15,8 +15,9 @@ from matplotlib import pyplot as plt
 import numpy
 import tqdm
 from pathlib import Path
-#При деплое заменить на from nn import api
-from Cancer_Finder.nn import api
+#При деплое заменить на
+from nn import api
+# from Cancer_Finder.nn import api
 import cv2
 
 
