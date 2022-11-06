@@ -6,7 +6,7 @@
 
 - The app consists of two parts, back (Cancer_Finder repo) and front(Cancer_Finder_F repo)
 - Back provides functionality:
-    - neural network, which can generate defects on healthy CT image
+    - neural network, which can generate defects on healthy CT image and save them on server
     - contains dcm images original CT
     - contains dcm images segmentation
     - provide access to CT images from front and get new segmentation from front
