@@ -92,7 +92,10 @@ button {
     height: 20%;
     border: 1px dashed #FFFFFF;
     border-radius: 5px;
-    vertical-align: middle
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sendBtn {
@@ -114,4 +117,10 @@ button {
     font-size: 16px;
     line-height: 20px;
     color: #FFFFFF;
+}
+
+.BtnCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
