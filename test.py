@@ -11,6 +11,7 @@ reload_model(Path("/home/kirrog/projects/Cancer_Finder/weights"))
 p = Path("/home/kirrog/projects/Cancer_Finder/data/studies_CT_Lung_anon")
 r = Path("/home/kirrog/projects/Cancer_Finder/data/studies_CT_LUNG_results")
 
+
 # def normalize(i: numpy.array) -> numpy.array:
 #     i[i < 0] = 0
 #     n = numpy.zeros((i.shape[-1], 1, i.shape[0], i.shape[1]))
@@ -20,6 +21,22 @@ r = Path("/home/kirrog/projects/Cancer_Finder/data/studies_CT_LUNG_results")
 #     for j in range(i.shape[2]):
 #         n[j, 0] = i[:, :, j]
 #     return n
+
+def transform(ds, arr):
+    dicom_file = pydicom.Dataset()
+    dicom_file.is_little_endian = True
+    dicom_file.is_implicit_VR = False
+    arr = arr.astype('uint16')
+    dicom_file.Rows = arr.shape[0]
+    dicom_file.Columns = arr.shape[1]
+    dicom_file.PhotometricInterpretation = "MONOCHROME2"
+    dicom_file.SamplesPerPixel = 1
+    dicom_file.BitsStored = 16
+    dicom_file.BitsAllocated = 16
+    dicom_file.HighBit = 15
+    dicom_file.PixelRepresentation = 1
+    dicom_file.PixelData = arr.tobytes()
+
 
 dirs = list(p.glob("*"))
 for j, directory in enumerate(dirs):
@@ -32,8 +49,9 @@ for j, directory in enumerate(dirs):
         dsc = []
         for i, dcm in tqdm(enumerate(dcms), desc=f"load:{j:02d}"):
             ds = pydicom.read_file(str(dcm), force=True)
-            dsc.append(ds)
             result_array[i, 0] = ds.pixel_array
+            # ds = transform(ds)
+            dsc.append(ds)
         minimal = result_array.min()
         maximum = result_array.max()
         result_array[result_array < 0] = 0
@@ -44,4 +62,5 @@ for j, directory in enumerate(dirs):
         result_array *= maximum
         result_array[result_array <= 0] = minimal
         for i, dcm in tqdm(enumerate(dcms), desc=f"load:{j:02d}"):
+            dsc[i].PixelData = result_array[i, 0].astype('uint16').tobytes()
             dsc[i].save_as(res / dcm.name)
