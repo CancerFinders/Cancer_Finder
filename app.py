@@ -60,7 +60,7 @@ def generate():
     # new_img = api.normalize()
     print('END')
     json = jsonify(201)
-    json.headers.add("Access-Control-Allow-Origin", "*")
+    json.headers.add("Access-Control-Allow-Origin", "http://cancerfinder.leha-vnuk.online")
     return json
 
 @app.route('/sendimg', methods=['POST'])
@@ -78,7 +78,7 @@ def send_img():
     json = jsonify({
         201
     })
-    json.headers.add("Access-Control-Allow-Origin", "*")
+    json.headers.add("Access-Control-Allow-Origin", "http://cancerfinder.leha-vnuk.online")
     return json
 
 @app.route('/sendjson', methods=['POST'])
@@ -96,7 +96,7 @@ def send_json():
     # replace(fullname_old, fullname_new)
 
     json = jsonify(201)
-    json.headers.add("Access-Control-Allow-Origin", "*")
+    json.headers.add("Access-Control-Allow-Origin", "http://cancerfinder.leha-vnuk.online")
     return json
 
 @app.route('/setimg', methods=['POST'])
@@ -129,7 +129,7 @@ def set_image_info():
     json = jsonify(
         201
     )
-    json.headers.add("Access-Control-Allow-Origin", "*")
+    json.headers.add("Access-Control-Allow-Origin", "http://cancerfinder.leha-vnuk.online")
     return json
 
 
@@ -172,7 +172,7 @@ def get_3dimage(type, weight, height):
         'h': h,
     })
     json = jsonify(resultList)
-    json.headers.add("Access-Control-Allow-Origin", "*")
+    json.headers.add("Access-Control-Allow-Origin", "http://cancerfinder.leha-vnuk.online")
     return json
 
 
@@ -202,7 +202,7 @@ def get_image(type, weight, height):
         'w': w,
         'h': h,
     })
-    json.headers.add("Access-Control-Allow-Origin", "*")
+    json.headers.add("Access-Control-Allow-Origin", "http://cancerfinder.leha-vnuk.online")
     return json
 
 @app.route('/')
