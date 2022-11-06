@@ -2,6 +2,7 @@ const jsonSender = document.getElementById("drag_and_drop_json");
 const imgSender = document.getElementById("drag_and_drop_img");
 const sendFileButton = document.getElementById('sendFileBtn')
 
+let core_url = "http://canserapi.leha-vnuk.online/"
 
 sendFileButton.addEventListener('click', () => {
 
@@ -10,7 +11,7 @@ sendFileButton.addEventListener('click', () => {
     let data = new FormData()
     data.append('file', inputFile.files[0])
     data.append('user', 'hubot')
-    fetch('http://127.0.0.1:5000/sendimg', {
+    fetch(core_url+'sendimg', {
         method: 'POST',
         body: data
     })
@@ -18,7 +19,7 @@ sendFileButton.addEventListener('click', () => {
 
 
 function sendImg(json){
-    fetch("http://127.0.0.1:5000/sendimg", {
+    fetch(core_url+"sendimg", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(json)
@@ -28,7 +29,7 @@ function sendImg(json){
 }
 
 function sendJson(json){
-    fetch("http://127.0.0.1:5000/sendjson", {
+    fetch(core_url+"sendjson", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(json)
