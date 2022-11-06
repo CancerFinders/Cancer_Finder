@@ -55,7 +55,7 @@ function httpGet(theUrl) {
     return xmlHttp.responseText;
 }
 
-let core_url = 'http://127.0.0.1:5000/'
+let core_url = 'http://canserapi.leha-vnuk.online/'
 
 let url =  core_url + 'img/' + imgType +'/512/512'
 let name = 'placeHolder'
