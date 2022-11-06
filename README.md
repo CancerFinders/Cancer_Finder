@@ -32,3 +32,5 @@
         - app.py - the main script of starting the back
         - cuda.py - script of check cuda-toolkit availability and machine resources
         - test.py - used in development process to check work of parts of app
+## Example cases in zip archive with README.md
+https://drive.google.com/file/d/1vprKZmdQzdPeV0LzL_1pFQUJ879x3Zld/view?usp=share_link
